@@ -44,13 +44,13 @@ spec:
             - --providers.kubernetesingress=true
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.tlschallenge=true
             - --certificatesResolvers.default.acme.httpChallenge=true
-            - --certificatesresolvers.{{ .Values.resolverName }}.acme.email=admin@qoala.id
+            - --certificatesresolvers.{{ .Values.resolverName }}.acme.email={{ .Values.acme.email }}
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.storage=acme.json
-            - --pilot.token=087a72f7-4066-49cc-8f73-dcc8042f4012
-            # Please note that this is the staging Let's Encrypt server.
-            # Once you get things working, you should remove that whole line altogether.
+            {{- if .Values.pilotToken }}
+            - --pilot.token={{ .Values.pilotToken }}
+            {{- end }}
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
-            - --certificatesResolvers.default.acme.keyType=RSA4096
+            - --certificatesResolvers.default.acme.keyType={{ .Values.acme.keyType }}
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.httpchallenge.entrypoint=web
           ports:
             - name: web

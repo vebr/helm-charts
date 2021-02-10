@@ -1,0 +1,9 @@
+resolverName: default
+host: localhost
+
+service:
+  name: default
+  port: 3000
+
+path:
+  prefix: /api

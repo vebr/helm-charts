@@ -1,2 +1,9 @@
 namespace: default
+
 resolverName: myresolver
+
+pilotToken:
+
+acme:
+  email: example@example.com
+  keyType: RSA4096
