@@ -23,6 +23,10 @@ spec:
       k8s-app: {{ .Release.Name }}-ingress-lb
   template:
     metadata:
+      annotations:
+        k8s.aliyun.com/eci-instance-spec: "0.5-1.0Gi"
+        k8s.aliyun.com/eci-instance-cpu: "0.5"
+        k8s.aliyun.com/eci-instance-mem: "1.0"
       labels:
         k8s-app: {{ .Release.Name }}-ingress-lb
         name: {{ .Release.Name }}-ingress-lb
@@ -40,18 +44,22 @@ spec:
             - --log=true
             - --ping
             - --log.level=DEBUG
+            - --log.format=json
             - --providers.kubernetescrd=true
             - --providers.kubernetesingress=true
+            - --certificatesresolvers.{{ .Values.resolverName }}=true
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.tlschallenge=true
-            - --certificatesResolvers.default.acme.httpChallenge=true
+            - --certificatesResolvers.{{ .Values.resolverName }}.acme.httpChallenge=true
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.email={{ .Values.acme.email }}
             - --certificatesresolvers.{{ .Values.resolverName }}.acme.storage=acme.json
+            - --certificatesresolvers.{{ .Values.resolverName }}.acme.dnschallenge.provider=route53
+            - --certificatesresolvers.{{ .Values.resolverName }}.acme.dnschallenge.delaybeforecheck=0
+            - --certificatesresolvers.{{ .Values.resolverName }}.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
+            - --certificatesResolvers.{{ .Values.resolverName }}.acme.keyType={{ .Values.acme.keyType }}
+            - --certificatesresolvers.{{ .Values.resolverName }}.acme.httpchallenge.entrypoint=web
             {{- if .Values.pilotToken }}
             - --pilot.token={{ .Values.pilotToken }}
             {{- end }}
-            - --certificatesresolvers.{{ .Values.resolverName }}.acme.caserver=https://acme-v02.api.letsencrypt.org/directory
-            - --certificatesResolvers.default.acme.keyType={{ .Values.acme.keyType }}
-            - --certificatesresolvers.{{ .Values.resolverName }}.acme.httpchallenge.entrypoint=web
           ports:
             - name: web
               containerPort: 80

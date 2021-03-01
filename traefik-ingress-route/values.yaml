@@ -1,7 +1,8 @@
 resolverName: default
-host: localhost
+host: dev.com
 
 service:
+  api-prefix: default
   name: default
   port: 3000
 

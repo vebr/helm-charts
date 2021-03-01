@@ -1,6 +1,6 @@
 namespace: default
 
-resolverName: myresolver
+resolverName: default
 
 pilotToken:
 

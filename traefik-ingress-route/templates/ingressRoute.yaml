@@ -5,6 +5,11 @@ metadata:
   {{- if .Release.Namespace }}
   namespace: {{ .Release.Namespace }}
   {{- end }}
+  annotations:
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    ingress.kubernetes.io/ssl-temporary-redirect: "false"
 spec:
   tls:
     options: {}
@@ -14,8 +19,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-  # - match: Host(`{{ .Values.host }}`) && PathPrefix(`/{{ .Release.Name }}`)
-  - match: PathPrefix(`/{{ .Values.service.name }}`)
+  - match: Host(`{{ .Values.host }}`) && PathPrefix(`/{{ .Values.service.api-prefix }}`)
     kind: Rule
     services:
     - name: {{ .Values.service.name }}
@@ -51,7 +55,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /{{ .Values.service.name }}
+      - /{{ .Values.service.prefix }}
       
 ---
 
