@@ -19,7 +19,8 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`{{ .Values.host }}`) && PathPrefix(`/{{ .Values.service.api-prefix }}`)
+  - match: Host(`{{ .Values.host }}`) && PathPrefix(`/{{ .Values.service.apiPrefix }}`)
+  # - match: PathPrefix(`/{{ .Values.service.apiPrefix }}`)
     kind: Rule
     services:
     - name: {{ .Values.service.name }}
@@ -55,7 +56,7 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /{{ .Values.service.prefix }}
+      - /{{ .Values.service.apiPrefix }}
       
 ---
 
