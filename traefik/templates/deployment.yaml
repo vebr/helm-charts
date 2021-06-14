@@ -41,6 +41,13 @@ spec:
             - --entrypoints.web.address=:80
             - --entrypoints.websecure.address=:443
             - --entryPoints.web.forwardedheaders.insecure=true
+            # Set timeout
+            - --entryPoints.websecure.transport.respondingTimeouts.writeTimeout=30
+            - --entryPoints.websecure.transport.respondingTimeouts.idleTimeout=30
+            - --entryPoints.websecure.transport.respondingTimeouts.readTimeout=30
+            - --entryPoints.web.transport.respondingTimeouts.writeTimeout=30
+            - --entryPoints.web.transport.respondingTimeouts.idleTimeout=30
+            - --entryPoints.web.transport.respondingTimeouts.readTimeout=30
             - --log=true
             - --ping
             - --log.level=DEBUG
